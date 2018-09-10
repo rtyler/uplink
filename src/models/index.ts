@@ -4,13 +4,16 @@ import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
 
+import logger from '../logger';
+
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/database')[env];
-
+const config = require(__dirname + '/../../config/database')[env];
 
 const db : any = {};
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
+const sequelize = new Sequelize(config.url, {
+  dialect: 'postgres',
+});
 
 fs
   .readdirSync(__dirname)
