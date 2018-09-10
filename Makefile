@@ -27,6 +27,10 @@ watch:
 watch-compile:
 	tsc -w
 
-.PHONY: all depends build clean check watch
+run: build
+	nodemon build/
+
+
+.PHONY: all depends build clean check watch run
 
 # vim: set et
