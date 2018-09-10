@@ -26,6 +26,7 @@
     "@types/feathersjs__express": "^1.1.4",
     "@types/feathersjs__feathers": "^3.0.4",
     "@types/jest": "^23.3.2",
+    "@types/sequelize": "^4.27.25",
     "@types/winston": "^2.4.4",
     "jest": "^23.5.0",
     "nodemon": "^1.18.4",
