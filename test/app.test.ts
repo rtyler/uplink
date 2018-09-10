@@ -3,7 +3,8 @@ import request from 'request-promise';
 
 import app from '../src/app';
 
-const port = app.get('port') || 3030;
+// Offsetting a bit to ensure that we can watch and run at the same time
+const port = (app.get('port') || 3030) + 10;
 const getUrl = pathname => url.format({
   hostname: app.get('host') || 'localhost',
   protocol: 'http',

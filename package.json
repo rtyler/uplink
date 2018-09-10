@@ -51,6 +51,12 @@
     "winston": "^3.1.0"
   },
   "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text"
+    ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
