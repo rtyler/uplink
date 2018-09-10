@@ -7,10 +7,25 @@ import db from '../models';
 import Event from '../models/event';
 import service from 'feathers-sequelize';
 import { DataTypes } from 'sequelize';
-import { receiveHooks } from './receive.hooks';
+
+import { HooksObject } from '@feathersjs/feathers';
+
+export const eventsHooks : HooksObject = {
+  before: {
+    all: [],
+    find: [],
+    get: [],
+    create: [],
+    update: [],
+    patch: [],
+    remove: []
+  },
+  after: {},
+  error: {},
+};
 
 export default (app) => {
   const Model : any = Event(db.sequelize, db.sequelize.Sequelize);
-  app.use('/receive', service({ Model }));
-  app.service('receive').hooks(receiveHooks);
+  app.use('/events', service({ Model }));
+  app.service('events').hooks(eventsHooks);
 };

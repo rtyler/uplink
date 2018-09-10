@@ -14,7 +14,7 @@ telemetry data from Jenkins instances.
 ----
 curl -d '{"type":"stapler", "payload" : {"hi" : "there"}}' \
     -H "Content-Type: application/json" \
-    http://localhost:3030/receive
+    http://localhost:3030/events
 ----
 
 
