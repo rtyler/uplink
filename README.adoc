@@ -1,0 +1,4 @@
+= Uplink
+
+`uplink` is a simple web application to receive short bursts of anonymous
+telemetry data from Jenkins instances.

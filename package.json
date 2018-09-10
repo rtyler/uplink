@@ -1,0 +1,47 @@
+{
+  "name": "uplink",
+  "version": "1.0.0",
+  "description": "Uplink receives bursts of Jenkins telemetry",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jenkins-infra/uplink.git"
+  },
+  "author": "R Tyler Croy",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jenkins-infra/uplink/issues"
+  },
+  "homepage": "https://github.com/jenkins-infra/uplink#readme",
+  "devDependencies": {
+    "@types/winston": "^2.4.4",
+    "jest": "^23.5.0",
+    "ts-jest": "^23.1.4",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "tslib": "^1.9.3",
+    "uuid": "^3.3.2",
+    "winston": "^3.1.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}
