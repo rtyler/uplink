@@ -13,8 +13,6 @@
     "sourceMap": true
   },
   "include": [
-      "./common/**/*",
-      "./crawl/**/*",
-      "./processor/**/*"
+      "./src/**/*"
   ]
 }
