@@ -16,6 +16,7 @@ check: depends
 	jest
 
 clean:
+	$(COMPOSE) down || true
 	rm -rf node_modules
 
 debug-jest:

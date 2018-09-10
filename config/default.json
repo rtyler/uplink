@@ -2,6 +2,7 @@
   "host": "localhost",
   "port": 3030,
   "public": "../public/",
+  "postgres": "postgres://postgres:jenkinsuplink@db:5432/uplink_development",
   "paginate": {
     "default": 10,
     "max": 50
