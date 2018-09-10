@@ -12,7 +12,7 @@ telemetry data from Jenkins instances.
 
 [source,bash]
 ----
-curl -d '{"type":"stapler", "payload" : {"hi" : "there"}}' \
+curl -d '{"type":"stapler", "correlator" : "my-correlator-id", "payload" : {"hi" : "there"}}' \
     -H "Content-Type: application/json" \
     http://localhost:3030/events
 ----
