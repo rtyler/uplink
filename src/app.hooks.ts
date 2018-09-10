@@ -1,7 +1,9 @@
 // Application hooks that run for every service
-const log = require('./hooks/log');
+import log from './hooks/log';
 
-module.exports = {
+import { HooksObject } from '@feathersjs/feathers';
+
+export const appHooks : HooksObject = {
   before: {
     all: [ log() ],
     find: [],

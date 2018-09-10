@@ -1,6 +1,7 @@
-const rp = require('request-promise');
-const url = require('url');
-const app = require('../src/app');
+import url from 'url';
+import request from 'request-promise';
+
+import app from '../src/app';
 
 const port = app.get('port') || 3030;
 const getUrl = pathname => url.format({
@@ -21,14 +22,14 @@ describe('Feathers application tests', () => {
   });
 
   it('starts and shows the index page', () => {
-    return rp(getUrl()).then(body =>
+    return request(getUrl()).then(body =>
       expect(body.indexOf('<html>')).not.toEqual(-1)
     );
   });
 
   describe('404', function() {
     it('shows a 404 HTML page', () => {
-      return rp({
+      return request({
         url: getUrl('path/to/nowhere'),
         headers: {
           'Accept': 'text/html'
@@ -40,7 +41,7 @@ describe('Feathers application tests', () => {
     });
 
     it('shows a 404 JSON error without stack trace', () => {
-      return rp({
+      return request({
         url: getUrl('path/to/nowhere'),
         json: true
       }).catch(res => {
