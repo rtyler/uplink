@@ -1,6 +1,7 @@
 # Root Makefile to make the building and testing of this project easier
 # regardless of *nix based platform
 PATH:=./node_modules/.bin:./tools:$(PATH)
+COMPOSE:=./tools/docker-compose
 
 all: build check
 
@@ -22,6 +23,13 @@ clean:
 debug-jest:
 	node --inspect-brk=0.0.0.0:9229 ./node_modules/.bin/jest
 
+migrate: depends
+	$(COMPOSE) up -d db
+	@echo ">> waiting a bit to make sure the database comes online.."
+	@sleep 5
+	$(COMPOSE) run --rm -e NODE_ENV=development node \
+		/usr/local/bin/node node_modules/.bin/sequelize db:migrate
+
 watch:
 	jest --watchAll
 
@@ -29,8 +37,9 @@ watch-compile:
 	tsc -w
 
 run: build
-	nodemon build/
-
+	@echo ">> Make sure you run migrations first!"
+	@sleep 1
+	$(COMPOSE) up
 
 .PHONY: all depends build clean check watch run
 

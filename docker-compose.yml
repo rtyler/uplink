@@ -12,7 +12,7 @@ services:
 
   node:
     image: node:10-alpine
-    command: 'nodemon build'
+    command: '/usr/local/bin/node $PWD/node_modules/.bin/nodemon build'
     working_dir: $PWD
     environment:
       - 'PATH=$PWD/node_modules/.bin:$PATH'
