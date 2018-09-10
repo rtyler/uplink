@@ -13,8 +13,8 @@ depends: package.json package-lock.json
 build: depends
 	tsc
 
-check: depends
-	jest
+check: build depends migrate
+	jest --bail
 
 clean:
 	$(COMPOSE) down || true
@@ -28,13 +28,16 @@ debug-db:
 
 migrate: depends
 	$(COMPOSE) up -d db
-	@echo ">> waiting a bit to make sure the database comes online.."
-	@sleep 5
+	@echo ">> waiting a moment to make sure the database comes online.."
+	@sleep 1
 	$(COMPOSE) run --rm node \
 		/usr/local/bin/node ./node_modules/.bin/sequelize db:migrate
 
-watch:
-	jest --watchAll
+watch: migrate
+	# Running with docker-compose since our tests require a database to be
+	# present
+	$(COMPOSE) run --rm node \
+		/usr/local/bin/node ./node_modules/.bin/jest --watchAll --bail
 
 watch-compile:
 	tsc -w
