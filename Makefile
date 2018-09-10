@@ -23,12 +23,15 @@ clean:
 debug-jest:
 	node --inspect-brk=0.0.0.0:9229 ./node_modules/.bin/jest
 
+debug-db:
+	$(COMPOSE) run --rm db psql -h db -U postgres uplink_development
+
 migrate: depends
 	$(COMPOSE) up -d db
 	@echo ">> waiting a bit to make sure the database comes online.."
 	@sleep 5
-	$(COMPOSE) run --rm -e NODE_ENV=development node \
-		/usr/local/bin/node node_modules/.bin/sequelize db:migrate
+	$(COMPOSE) run --rm node \
+		/usr/local/bin/node ./node_modules/.bin/sequelize db:migrate
 
 watch:
 	jest --watchAll

@@ -7,8 +7,6 @@ services:
       # Used for psql non-interactive scripting
       - 'PGPASSWORD=jenkinsuplink'
       - 'POSTGRES_DB=uplink_development'
-    ports:
-      - '5432:5432'
 
   node:
     image: node:10-alpine

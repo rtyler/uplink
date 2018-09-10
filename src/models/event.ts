@@ -1,7 +1,7 @@
 'use strict';
 
 export default (sequelize, DataTypes) => {
-  const Event = sequelize.define('Event', {
+  const Event = sequelize.define('events', {
     type: DataTypes.STRING,
     payload: DataTypes.JSON
   }, {});
