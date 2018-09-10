@@ -1,4 +1,3 @@
-const assert = require('assert');
 const rp = require('request-promise');
 const url = require('url');
 const app = require('../src/app');
@@ -12,18 +11,18 @@ const getUrl = pathname => url.format({
 });
 
 describe('Feathers application tests', () => {
-  before(function(done) {
+  beforeEach(function(done) {
     this.server = app.listen(port);
     this.server.once('listening', () => done());
   });
 
-  after(function(done) {
+  afterEach(function(done) {
     this.server.close(done);
   });
 
   it('starts and shows the index page', () => {
     return rp(getUrl()).then(body =>
-      assert.ok(body.indexOf('<html>') !== -1)
+      expect(body.indexOf('<html>')).not.toEqual(-1)
     );
   });
 
@@ -35,8 +34,8 @@ describe('Feathers application tests', () => {
           'Accept': 'text/html'
         }
       }).catch(res => {
-        assert.equal(res.statusCode, 404);
-        assert.ok(res.error.indexOf('<html>') !== -1);
+        expect(res.statusCode).toEqual(404);
+        expect(res.error.indexOf('<html>')).not.toEqual(-1);
       });
     });
 
@@ -45,10 +44,10 @@ describe('Feathers application tests', () => {
         url: getUrl('path/to/nowhere'),
         json: true
       }).catch(res => {
-        assert.equal(res.statusCode, 404);
-        assert.equal(res.error.code, 404);
-        assert.equal(res.error.message, 'Page not found');
-        assert.equal(res.error.name, 'NotFound');
+        expect(res.statusCode).toEqual(404);
+        expect(res.error.code).toEqual(404);
+        expect(res.error.message).toEqual('Page not found');
+        expect(res.error.name).toEqual('NotFound');
       });
     });
   });
