@@ -2,3 +2,25 @@
 
 `uplink` is a simple web application to receive short bursts of anonymous
 telemetry data from Jenkins instances.
+
+== Development
+
+* Running tests: `make check`
+* Running the server: `make run`
+
+=== Uploading a test event
+
+[source,bash]
+----
+curl -d '{"type":"stapler", "payload" : {"hi" : "there"}}' \
+    -H "Content-Type: application/json" \
+    http://localhost:3030/receive
+----
+
+
+=== Database Debugging
+
+[source,bash]
+----
+./tools/docker-compose run --rm db psql -h db -U postgres uplink_development
+----
