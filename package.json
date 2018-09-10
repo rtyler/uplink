@@ -4,6 +4,7 @@
   "description": "Uplink receives bursts of Jenkins telemetry",
   "main": "src/index.js",
   "directories": {
+    "lib": "src",
     "test": "test"
   },
   "scripts": {
@@ -27,17 +28,24 @@
     "@types/jest": "^23.3.2",
     "@types/winston": "^2.4.4",
     "jest": "^23.5.0",
+    "nodemon": "^1.18.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "sequelize-cli": "^4.1.1",
     "ts-jest": "^23.1.4",
     "typescript": "^3.0.3"
   },
   "dependencies": {
     "@feathersjs/configuration": "^2.0.2",
+    "@feathersjs/errors": "^3.3.2",
     "@feathersjs/express": "^1.2.5",
     "@feathersjs/feathers": "^3.2.1",
+    "@feathersjs/socketio": "^3.2.4",
+    "compression": "^1.7.3",
     "cors": "^2.8.4",
     "feathers-sequelize": "^3.1.2",
     "helmet": "^3.13.0",
+    "serve-favicon": "^2.5.0",
     "tslib": "^1.9.3",
     "uuid": "^3.3.2",
     "winston": "^3.1.0"
