@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    title Uplink Dashboard
+  body
+    h1
+      Uplink Dashboard
+    #container
+      a(href='/logout') Logout
+    #container.col
+      p
+        each e in events
+          #{JSON.stringify(e)}
+
+// vim: ft=haml

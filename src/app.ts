@@ -37,11 +37,16 @@ app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', express.static(app.get('public')));
 
+
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(socketio());
 
-app.get('/dashboard', cookieParser());
+/*
+ * Enabling the cookie parser on all requests to make sure we can use the JWT
+ * authentication wherever we damn well please
+ */
+app.get('*', cookieParser());
 
 /*
  * Allow overriding the JWT secret in the environment, a la Kubernetes
@@ -57,6 +62,26 @@ app.configure(oauth2(Object.assign(githubSettings, {
   successRedirect: '/dashboard',
   scope: [],
 })));
+
+app.set('view engine', 'pug');
+/*
+ * Render the dashboard view with authentication
+ */
+app.get('/dashboard',
+  cookieParser(),
+  authentication.express.authenticate('jwt'),
+  (req, res, next) => {
+    app.service('events')
+      .find()
+      .then(result => res.render('dashboard', { events: result }));
+});
+app.get('/logout',
+  cookieParser(),
+  (req, res, next) => {
+    res.clearCookie(app.get('authentication').cookie.name);
+    res.redirect('/');
+  });
+
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
