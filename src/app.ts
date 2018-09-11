@@ -8,8 +8,14 @@ import logger from './logger';
 
 import feathers from '@feathersjs/feathers';
 import configuration from '@feathersjs/configuration';
+import authentication from '@feathersjs/authentication';
+import jwt from '@feathersjs/authentication-jwt';
+import oauth2 from '@feathersjs/authentication-oauth2';
+import { Strategy } from 'passport-github';
 import express from '@feathersjs/express';
 import socketio from '@feathersjs/socketio';
+
+import cookieParser from 'cookie-parser';
 
 import middleware from './middleware';
 import services from './services';
@@ -17,9 +23,10 @@ import { appHooks } from './app.hooks';
 import channels from './channels';
 
 const app = express(feathers());
+const settings = configuration();
 
 // Load app configuration
-app.configure(configuration());
+app.configure(settings);
 // Enable security, CORS, compression, favicon and body parsing
 app.use(helmet());
 app.use(cors());
@@ -33,6 +40,23 @@ app.use('/', express.static(app.get('public')));
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(socketio());
+
+app.get('/dashboard', cookieParser());
+
+/*
+ * Allow overriding the JWT secret in the environment, a la Kubernetes
+ */
+app.get('authentication').secret = process.env.JWT_SECRET || app.get('authentication').secret;
+app.configure(authentication(app.get('authentication')));
+
+app.configure(jwt());
+const githubSettings = app.get('github');
+app.configure(oauth2(Object.assign(githubSettings, {
+  name: 'github',
+  Strategy: Strategy,
+  successRedirect: '/dashboard',
+  scope: [],
+})));
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
