@@ -22,6 +22,9 @@ import services from './services';
 import { appHooks } from './app.hooks';
 import channels from './channels';
 
+import Dashboard from './controllers/dashboard';
+import Export from './controllers/export';
+
 const app = express(feathers());
 const settings = configuration();
 
@@ -64,27 +67,10 @@ app.configure(oauth2(Object.assign(githubSettings, {
 })));
 
 app.set('view engine', 'pug');
-/*
- * Render the dashboard view with authentication
- */
-app.get('/dashboard',
-  cookieParser(),
-  authentication.express.authenticate('jwt'),
-  (req, res, next) => {
-    let query = Object.assign({
-      $sort: {
-        createdAt: -1,
-      }
-    }, req.query);
-    app.service('events')
-      .find({ query: query })
-      .then(result =>
-        res.render('dashboard', {
-          events: result,
-          user: (req as any).user,
-          query: req.query,
-        }));
-});
+
+Dashboard(app);
+Export(app);
+
 app.get('/logout',
   cookieParser(),
   (req, res, next) => {

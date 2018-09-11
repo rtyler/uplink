@@ -20,11 +20,11 @@ html(lang="en")
           div
           ul.list-inline
             li.list-inline-item
-              a(href='/dashboard').
+              a(href='/dashboard', title='Reset the filter query').
                 Reset query
             if events.total > events.limit
               li.list-inline-item
-                a(href='?id[$lt]=' + events.data[events.data.length - 1].id).
+                a(href='?id[$lt]=' + events.data[events.data.length - 1].id, title='View the next page of results').
                   Next
         table.table-dark.table
           tr
@@ -50,9 +50,14 @@ html(lang="en")
               td.text-center
                 textarea(cols=80, rows=4, readonly=true).
                   #{JSON.stringify(e.payload)}
-              td.text-center
-                a(href='/events/' + e.id, target='_blank').
-                  View Raw
+              td
+                ul.list
+                  li.list-item
+                    a(href='/events/' + e.id, target='_blank', title='View the raw JSON of this event').
+                      View Raw
+                  li.list-item
+                    a(href='/export/' + e.type, title='Export a .json file of all `' + e.type + '` records').
+                      Export all of this type
 
 // vim: ft=haml
 

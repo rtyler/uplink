@@ -1,5 +1,5 @@
 /*
- * The /receive service is responsible receiving the data POSTed from the
+ * The /events service is responsible receiving the data POSTed from the
  * Jenkins instances and storing it in the database
  */
 
@@ -8,6 +8,7 @@ import { Application, HooksObject } from '@feathersjs/feathers';
 import service from 'feathers-sequelize';
 import { DataTypes } from 'sequelize';
 
+import logger from '../logger';
 import db from '../models';
 import Event from '../models/event';
 

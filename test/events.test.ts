@@ -2,6 +2,7 @@ import url from 'url';
 import request from 'request-promise';
 
 import app from '../src/app';
+import events from '../src/service/events';
 
 // Offsetting a bit to ensure that we can watch and run at the same time
 const port = (app.get('port') || 3030) + 10;
@@ -17,10 +18,7 @@ describe('Acceptance tests for /evetns', () => {
     this.server = app.listen(port);
     this.server.once('listening', () => done());
   });
-
-  afterEach((done) => {
-    this.server.close(done);
-  });
+  afterEach(done => this.server.close(done));
 
   it('responds to GET /events', () => {
     return request(getUrl('/events'), {
