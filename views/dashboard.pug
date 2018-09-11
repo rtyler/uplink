@@ -24,23 +24,24 @@ html(lang="en")
       .container
         table.table-dark.table
           tr
-            th(scope='col') Actions
-            th(scope='col') Correlator
+            th(scope='col').text-center Actions
+            th(scope='col').text-center Correlator
               strong
                 a(href='#').text-light &#8595;
-            th(scope='col') Type
-            th(scope='col') Payload
+            th(scope='col').text-center Type
+            th(scope='col').text-center Payload
           each e in events
             tr
-              td
+              td.text-center
                 a(href='/events/' + e.id, target='_blank').
                   View Raw
-              td
+              td.text-center
                 a(href='?correlator=' + e.correlator) #{e.correlator}
-              td
+              td.text-center
                 a(href='?type=' + e.type) #{e.type}
-              td.
-                #{JSON.stringify(e.payload)}
+              td.text-center
+                textarea(cols=80, rows=4, readonly=true).
+                  #{JSON.stringify(e.payload)}
 
 // vim: ft=haml
 
