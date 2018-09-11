@@ -14,27 +14,35 @@ html(lang="en")
       .container.text-light
         div Hey there &nbsp;
           strong #{user.github.profile.displayName}
-        div.float-right
-          strong.text-light.
-            Total Records: #{events.length}
 
-        div
-          a(href='/dashboard').text-light Reset query
-
-      .container
+      .container.text-light
+        div.float-right.strong
+          div
+          ul.list-inline
+            li.list-inline-item
+              a(href='/dashboard').
+                Reset query
+            if events.total > events.limit
+              li.list-inline-item
+                a(href='?id[$lt]=' + events.data[events.data.length - 1].id).
+                  Next
         table.table-dark.table
           tr
-            th(scope='col').text-center Actions
-            th(scope='col').text-center Correlator
+            th(scope='col').text-center ID &nbsp;
               strong
-                a(href='#').text-light &#8595;
+                a(href='?$sort[id]=-1').text-light ▲
+                a(href='?$sort[id]=1').text-light ▼
+            th(scope='col').text-center Correlator &nbsp;
+              strong
+                a(href='?$sort[correlator]=-1').text-light ▲
+                a(href='?$sort[correlator]=1').text-light ▼
             th(scope='col').text-center Type
             th(scope='col').text-center Payload
-          each e in events
+            th(scope='col').text-center Actions
+          each e in events.data
             tr
-              td.text-center
-                a(href='/events/' + e.id, target='_blank').
-                  View Raw
+              td.text-center.
+                #{e.id}
               td.text-center
                 a(href='?correlator=' + e.correlator) #{e.correlator}
               td.text-center
@@ -42,6 +50,9 @@ html(lang="en")
               td.text-center
                 textarea(cols=80, rows=4, readonly=true).
                   #{JSON.stringify(e.payload)}
+              td.text-center
+                a(href='/events/' + e.id, target='_blank').
+                  View Raw
 
 // vim: ft=haml
 

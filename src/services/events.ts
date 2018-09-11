@@ -42,6 +42,10 @@ export const eventsHooks : HooksObject = {
 
 export default (app : Application) => {
   const Model : any = Event(db.sequelize, db.sequelize.Sequelize);
-  app.use('/events', service({ Model }));
+  app.use('/events', service({
+    Model: Model,
+    paginate: {
+      default: 25,
+  }}));
   app.service('events').hooks(eventsHooks);
 };
