@@ -3,6 +3,8 @@
 `uplink` is a simple web application to receive short bursts of anonymous
 telemetry data from Jenkins instances.
 
+image::https://raw.githubusercontent.com/rtyler/uplink/master/public/logged-in.png[role=center, title="Logged in to Uplink"]
+
 == Development
 
 * Running tests: `make check`
