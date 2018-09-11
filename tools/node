@@ -18,6 +18,7 @@ fi;
 exec docker run --rm ${TTY_ARGS} --net host  \
     -u $(id -u):$(id -g) \
     -w ${PWD} \
+    --name "$(basename $PWD)-${RANDOM}" \
     --mount type=tmpfs,destination=/.npm \
     --mount type=tmpfs,destination=/.config \
     -v ${PWD}:${PWD} \
