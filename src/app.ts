@@ -71,9 +71,19 @@ app.get('/dashboard',
   cookieParser(),
   authentication.express.authenticate('jwt'),
   (req, res, next) => {
+    let query = Object.assign(req.query, {
+      $sort: {
+        createdAt: -1,
+      }
+    });
     app.service('events')
-      .find()
-      .then(result => res.render('dashboard', { events: result }));
+      .find({ query: query })
+      .then(result =>
+        res.render('dashboard', {
+          events: result,
+          user: (req as any).user,
+          req: req,
+        }));
 });
 app.get('/logout',
   cookieParser(),
