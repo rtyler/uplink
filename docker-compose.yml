@@ -9,7 +9,7 @@ services:
       - 'POSTGRES_DB=uplink_development'
 
   node:
-    image: node:10-alpine
+    image: node:10
     command: '/usr/local/bin/node $PWD/node_modules/.bin/nodemon build'
     working_dir: $PWD
     environment:

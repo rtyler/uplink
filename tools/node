@@ -25,5 +25,5 @@ exec docker run --rm ${TTY_ARGS} --net host  \
     -e LANG=C.UTF-8 \
     -e LOG_LEVEL=$LOG_LEVEL \
     $(printenv | grep -i \^node | awk '{ print "-e", $1 }') \
-    node:10-alpine \
+    node:10 \
     ${COMMAND}

@@ -27,12 +27,15 @@ describe('Acceptance tests for /evetns', () => {
       json: true,
       resolveWithFullResponse: true,
     }).then(response =>
-      expect(response.statusCode).toEqual(200)
+      expect(response.statusCode).toEqual(401)
+    ).catch(err =>
+      expect(err.statusCode).toEqual(401)
     );
   });
 
   it('POST /events should allow creating a valid event', () => {
     return request(getUrl('/events'), {
+      method: 'POST',
       json: true,
       resolveWithFullResponse: true,
       body: {
@@ -43,7 +46,7 @@ describe('Acceptance tests for /evetns', () => {
         correlator: '0xdeadbeef',
       },
     }).then(response =>
-      expect(response.statusCode).toEqual(200)
+      expect(response.statusCode).toEqual(201)
     );
   });
 });

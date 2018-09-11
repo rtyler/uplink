@@ -6,6 +6,9 @@ JEST=$(PWD)/node_modules/jest/bin/jest.js
 SEQUELIZE=$(PWD)/node_modules/sequelize-cli/lib/sequelize
 COMPOSE:=./tools/docker-compose
 
+JEST_ARGS=--runInBand --bail --forceExit --detectOpenHandles
+
+
 all: build check
 
 depends: package.json package-lock.json
@@ -15,7 +18,10 @@ build: depends
 	$(TSC)
 
 check: build depends migrate
-	$(JEST) --bail
+	# Running with docker-compose since our tests require a database to be
+	# present
+	$(COMPOSE) run --rm node \
+		/usr/local/bin/node $(JEST) $(JEST_ARGS)
 
 clean:
 	$(COMPOSE) down || true
@@ -43,7 +49,7 @@ watch: migrate
 	# Running with docker-compose since our tests require a database to be
 	# present
 	$(COMPOSE) run --rm node \
-		/usr/local/bin/node $(JEST) --watchAll --bail --forceExit
+		/usr/local/bin/node $(JEST) $(JEST_ARGS) --watch
 
 watch-compile:
 	$(TSC) -w
