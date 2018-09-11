@@ -27,6 +27,11 @@ debug-jest:
 debug-db:
 	$(COMPOSE) run --rm db psql -h db -U postgres uplink_development
 
+generate-event:
+	curl -d '{"type":"stapler", "correlator" : "my-correlator-id", "payload" : {"timestamp" : "$(shell date)", "hi" : "there"}}' \
+	    -H "Content-Type: application/json" \
+	    http://localhost:3030/events
+
 migrate: depends
 	$(COMPOSE) up -d db
 	@echo ">> waiting a moment to make sure the database comes online.."
