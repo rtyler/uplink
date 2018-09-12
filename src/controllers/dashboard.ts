@@ -18,13 +18,17 @@ export default (app) => {
       }, req.query);
 
       app.service('events')
-        .find({ query: query })
+        .find({
+          query: query,
+          // propogate our user object down
+          user: (req as any).user,
+        })
         .then(result =>
           res.render('dashboard', {
             events: result,
             user: (req as any).user,
             query: req.query,
-          })
-      );
+          }))
+        .catch(err => res.render('notauthorized'));
   });
 };

@@ -44,6 +44,8 @@ migrate: depends
 	@sleep 1
 	$(COMPOSE) run --rm node \
 		/usr/local/bin/node $(SEQUELIZE) db:migrate
+	$(COMPOSE) run --rm node \
+		/usr/local/bin/node $(SEQUELIZE) db:seed:all
 
 watch: migrate
 	# Running with docker-compose since our tests require a database to be

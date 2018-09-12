@@ -3,11 +3,11 @@
  * Jenkins instances and storing it in the database
  */
 
-import authentication from '@feathersjs/authentication';
 import { Application, HooksObject } from '@feathersjs/feathers';
 import service from 'feathers-sequelize';
 import { DataTypes } from 'sequelize';
 
+import authorize from '../hooks/authorize';
 import logger from '../logger';
 import db from '../models';
 import Event from '../models/event';
@@ -17,10 +17,10 @@ export const eventsHooks : HooksObject = {
     all: [
     ],
     find: [
-      authentication.hooks.authenticate(['jwt']),
+      authorize(),
     ],
     get: [
-      authentication.hooks.authenticate(['jwt']),
+      authorize(),
     ],
     create: [
       /*
@@ -28,13 +28,13 @@ export const eventsHooks : HooksObject = {
        */
     ],
     update: [
-      authentication.hooks.authenticate(['jwt']),
+      authorize(),
     ],
     patch: [
-      authentication.hooks.authenticate(['jwt']),
+      authorize(),
     ],
     remove: [
-      authentication.hooks.authenticate(['jwt']),
+      authorize(),
     ],
   },
   after: {},

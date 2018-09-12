@@ -3,10 +3,10 @@
  * the form of files to clients
  */
 
-import authentication from '@feathersjs/authentication';
 import { Application, HooksObject, Params, SKIP } from '@feathersjs/feathers';
 import { QueryTypes } from 'sequelize';
 
+import authorize from '../hooks/authorize';
 import logger from '../logger';
 import db from '../models';
 import Event from '../models/event';
@@ -23,7 +23,7 @@ export const bulkHooks : HooksObject = {
         }
         return context;
       },
-      authentication.hooks.authenticate(['jwt']),
+      authorize(),
     ],
   },
   after: {},

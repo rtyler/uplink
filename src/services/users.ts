@@ -6,7 +6,9 @@ import authentication from '@feathersjs/authentication';
 import { HooksObject } from '@feathersjs/feathers';
 import service from 'feathers-sequelize';
 import { DataTypes } from 'sequelize';
+import { NotAuthenticated, Forbidden } from '@feathersjs/errors';
 
+import authorize from '../hooks/authorize';
 import db from '../models';
 import User from '../models/user';
 
@@ -14,6 +16,11 @@ export const usersHooks : HooksObject = {
   before: {
     all: [
       authentication.hooks.authenticate(['jwt']),
+      (context) => {
+        if (context.params.provider == 'rest') {
+          throw new NotAuthenticated('This route is not allowed to be publicly accessed');
+        }
+      },
     ],
   },
   after: {
