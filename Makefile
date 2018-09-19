@@ -5,11 +5,17 @@ TSC=$(PWD)/node_modules/typescript/bin/tsc
 JEST=$(PWD)/node_modules/jest/bin/jest.js
 SEQUELIZE=$(PWD)/node_modules/sequelize-cli/lib/sequelize
 COMPOSE:=./tools/docker-compose
+IMAGE_NAME=jenkinsciinfra/uplink
+IMAGE_TAG:=$(shell date "+%Y%m%d%H%M")
 
 JEST_ARGS=--runInBand --bail --forceExit --detectOpenHandles
 
 
-all: build check
+all: build check container
+
+container: Dockerfile depends
+	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) .
+	docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
 
 depends: package.json package-lock.json
 	if [ ! -d node_modules ]; then npm install; fi;
