@@ -6,5 +6,25 @@ pipeline {
         sh 'make check'
       }
     }
+
+    stage('Containers') {
+      steps {
+        sh 'make container'
+      }
+    }
+
+    stage('Publish container') {
+        when {
+            expression { infra.isTrusted() }
+        }
+
+        steps {
+            withCredentials([[$class: 'ZipFileBinding',
+                        credentialsId: 'jenkins-dockerhub',
+                            variable: 'DOCKER_CONFIG']]) {
+                sh 'make publish'
+            }
+        }
+    }
   }
 }

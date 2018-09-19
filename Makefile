@@ -17,6 +17,10 @@ container: Dockerfile depends
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) .
 	docker tag $(IMAGE_NAME):$(IMAGE_TAG) $(IMAGE_NAME):latest
 
+publish:
+	docker push ${IMAGE_NAME}:$(IMAGE_TAG)
+	docker push $(IMAGE_NAME):latest
+
 depends: package.json package-lock.json
 	if [ ! -d node_modules ]; then npm install; fi;
 
