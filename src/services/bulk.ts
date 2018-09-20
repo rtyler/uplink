@@ -41,7 +41,7 @@ export class Bulk {
   }
 
   public async find(params : Params) : Promise<any> {
-    if (!params.type) {
+    if (!params.query.type) {
       return Promise.resolve([]);
     }
     /*
@@ -50,7 +50,7 @@ export class Bulk {
      */
     return db.sequelize.query("SELECT * FROM events WHERE type = :type", {
       replacements: {
-        type: params.type,
+        type: params.query.type,
       },
       type: QueryTypes.SELECT,
     });
