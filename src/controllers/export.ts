@@ -12,7 +12,12 @@ export default (app) => {
     authentication.express.authenticate('jwt'),
     (req, res, next) => {
       app.service('/events/bulk')
-        .find({ type: req.params.type })
+        .find({
+          query: {
+            type: req.params.type,
+          },
+          user: (req as any).user,
+        })
         .then((result) => {
           res.setHeader('Content-Disposition', `attachment; filename=${req.params.type}.json`);
           res.setHeader('Content-Type', 'application/json');
