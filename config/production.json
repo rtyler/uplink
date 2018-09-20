@@ -1,4 +1,18 @@
 {
-  "host": "uplink-app.feathersjs.com",
-  "port": "PORT"
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "authentication": {
+    "secret": "a poorly formed production secret",
+    "session" : true,
+    "cookie" : {
+      "secure": false,
+      "enabled": true,
+      "name": "uplink-jwt"
+    }
+  },
+  "paginate": {
+    "default": 10,
+    "max": 50
+  }
 }
