@@ -12,6 +12,7 @@ const config = require(__dirname + '/../../config/database')[env];
 
 const db : any = {};
 const sequelize = new Sequelize(config.url, {
+  logging: !!process.env.DB_TRACING,
   dialect: 'postgres',
 });
 
