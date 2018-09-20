@@ -51,7 +51,7 @@ generate-event:
 migrate: depends
 	$(COMPOSE) up -d db
 	@echo ">> waiting a moment to make sure the database comes online.."
-	@sleep 1
+	@sleep 3
 	$(COMPOSE) run --rm node \
 		/usr/local/bin/node $(SEQUELIZE) db:migrate
 	$(COMPOSE) run --rm node \
