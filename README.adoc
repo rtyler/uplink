@@ -1,5 +1,7 @@
 = Uplink
 
+image:https://ci.jenkins.io/job/Infra/job/uplink/job/master/badge/icon?style=plastic[link="https://ci.jenkins.io/blue/organizations/jenkins/Infra%2Fuplink/branches"]
+
 `uplink` is a simple web application to receive short bursts of anonymous
 telemetry data from Jenkins instances.
 
