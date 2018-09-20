@@ -3,6 +3,8 @@ pipeline {
   stages { 
     stage('Build & test') {
       steps {
+        sh 'make migrate'
+        sleep 5
         sh 'make check'
       }
     }
