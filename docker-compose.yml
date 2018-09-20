@@ -17,6 +17,7 @@ services:
       - 'NODE_ENV=$NODE_ENV'
       - 'DB_TRACING=true'
       - 'DEBUG=$DEBUG'
+      - 'SENTRY_DSN=$SENTRY_DSN'
     volumes:
       - $PWD:$PWD
     ports:
