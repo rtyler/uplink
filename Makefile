@@ -6,7 +6,7 @@ JEST=$(PWD)/node_modules/jest/bin/jest.js
 SEQUELIZE=$(PWD)/node_modules/sequelize-cli/lib/sequelize
 COMPOSE:=./tools/docker-compose
 IMAGE_NAME=jenkinsciinfra/uplink
-IMAGE_TAG:=$(shell date "+%Y%m%d%H%M")
+IMAGE_TAG:=$(shell git rev-parse HEAD);
 
 JEST_ARGS=--runInBand --bail --forceExit --detectOpenHandles
 
