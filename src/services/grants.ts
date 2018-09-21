@@ -3,6 +3,7 @@ import { HooksObject } from '@feathersjs/feathers';
 import service from 'feathers-sequelize';
 import { DataTypes } from 'sequelize';
 
+import logger from '../logger';
 import db from '../models';
 import Grant from '../models/grant';
 

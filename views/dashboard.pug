@@ -6,7 +6,15 @@ html(lang="en")
   body.bg-dark
     .container
       div.float-right
-        a(href='/logout').text-success Logout
+        ul.list-inline
+          li.list-inline-item
+            a(href='/logout').text-warning Logout
+          if isAdmin
+            li.list-inline-item
+              a(href='/admin').text-danger.bg-light
+                strong Admin
+
+
       h1.text-light Uplink Dashboard
       .container.text-light
         div Hey there &nbsp;
@@ -23,7 +31,7 @@ html(lang="en")
               li.list-inline-item
                 a(href='?id[$lt]=' + events.data[events.data.length - 1].id, title='View the next page of results').
                   Next
-        table.table-dark.table
+        table.table-dark.table.table-striped.table-borderd.table-hover
           tr
             th(scope='col').text-center ID &nbsp;
               strong
