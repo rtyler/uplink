@@ -23,6 +23,7 @@ export default (app) => {
           res.setHeader('Content-Type', 'application/json');
           res.send(result);
           res.end();
-        });
-  });
+        })
+        .catch(next);
+    });
 };

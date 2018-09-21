@@ -5,9 +5,10 @@
 
 import { Application, HooksObject } from '@feathersjs/feathers';
 import service from 'feathers-sequelize';
-import { DataTypes } from 'sequelize';
+import { Operators, DataTypes } from 'sequelize';
 
 import authorize from '../hooks/authorize';
+import applyGrant from '../hooks/apply-grant';
 import logger from '../logger';
 import db from '../models';
 import Event from '../models/event';
@@ -18,9 +19,11 @@ export const eventsHooks : HooksObject = {
     ],
     find: [
       authorize(),
+      applyGrant(),
     ],
     get: [
       authorize(),
+      applyGrant(),
     ],
     create: [
       /*

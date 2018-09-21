@@ -4,6 +4,7 @@
  */
 
 import { Application, HooksObject, Params, SKIP } from '@feathersjs/feathers';
+import { BadRequest, NotFound } from '@feathersjs/errors';
 import { QueryTypes } from 'sequelize';
 
 import authorize from '../hooks/authorize';
@@ -14,16 +15,11 @@ import Event from '../models/event';
 export const bulkHooks : HooksObject = {
   before: {
     all: [
+      authorize(),
       (context) => {
-        /*
-         * Allow skipping for our tests
-         */
-        if (process.env.NODE_ENV != 'production') {
-          return SKIP;
-        }
+        context.params.grants = context.data.grants
         return context;
       },
-      authorize(),
     ],
   },
   after: {},
@@ -42,8 +38,13 @@ export class Bulk {
 
   public async find(params : Params) : Promise<any> {
     if (!params.query.type) {
-      return Promise.resolve([]);
+      return Promise.reject(new BadRequest('Request must have a `type` in the URL'));
     }
+    const grantedTypes = params.grants.filter(g => (g == '*') || (g == params.query.type));
+    if (grantedTypes.length == 0) {
+      return Promise.reject(new NotFound('No data found'));
+    }
+
     /*
      * This is clearly stupid. I have no idea how we'll query very large
      * datasets from PostgreSQL but this at least gets us _everything_
