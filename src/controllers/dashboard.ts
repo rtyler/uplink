@@ -29,6 +29,6 @@ export default (app) => {
             user: (req as any).user,
             query: req.query,
           }))
-        .catch(err => res.render('notauthorized'));
+        .catch(next);
   });
 };

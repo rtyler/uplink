@@ -17,20 +17,17 @@ export default () => {
     return context.app.service('grants').find({
       query: {
         name: name,
-        $or : [
-          {
-            type: type,
-          },
-          {
-            type: '*',
-          },
-        ],
       },
     })
       .then((records) => {
         if (records.length === 0) {
           throw new Forbidden('Not allowed, sorry buddy');
         }
+
+        if (!context.data) {
+          context.data = {};
+        }
+        context.data.grants = records.map(r => r.type);
         return context;
       });
   };
