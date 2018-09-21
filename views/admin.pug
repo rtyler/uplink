@@ -1,0 +1,53 @@
+doctype html
+html(lang="en")
+  link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous")
+  head
+    title Uplink Admin
+  body.bg-dark
+    .container
+      div.float-right
+        ul.list-inline
+          li.list-inline-item
+            a(href='/logout').text-warning Logout
+          li.list-inline-item
+            a(href='/Dashboard').text-success.bg-light
+              strong Dashboard
+
+
+      h1.text-light Uplink Admin
+      .container.text-light
+        div Hey there &nbsp;
+          strong #{user.github.profile.displayName}
+
+
+      .container.text-light
+        table.table-dark.table.table-striped.table-bordered.table-hover
+          tr
+            th(scope='col').text-center Name
+            th(scope='col').text-center Type
+            th(scope='col').text-center Actions
+          tr.bg-secondary
+            form(method='POST', action='/grants')
+              input(type='hidden', name='_return', value='true')
+              input(name='_method', type='hidden', value='PUT')
+              td.text-center
+                input(name='name', placeholder='Enter GitHub username').form-control
+              td.text-center
+                input(name='type', placeholder='Enter event type').form-control
+              td.text-center
+                button(type='submit').btn.btn-success Grant
+          each g in grants
+            tr
+              td.text-center.
+                #{g.name}
+              td.text-center.
+                #{g.type}
+              td.text-center
+                form(method='POST', action='/grants/' + g.id)
+                  input(type='hidden', name='_return', value='true')
+                  input(type='hidden', name='_method', value='DELETE')
+                  button(type=submit, title='Delete grants record ' + g.id).btn.btn-danger Delete
+
+
+// vim: ft=haml
+

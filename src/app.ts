@@ -22,6 +22,7 @@ import services from './services';
 import { appHooks } from './app.hooks';
 import channels from './channels';
 
+import Admin from './controllers/admin';
 import Dashboard from './controllers/dashboard';
 import Export from './controllers/export';
 
@@ -50,6 +51,18 @@ app.configure(socketio());
  * authentication wherever we damn well please
  */
 app.get('*', cookieParser());
+app.post('*', cookieParser());
+
+/*
+ * Ensure that POST calls which have _method set to DELETE get passed through
+ * properly
+ */
+app.post('*', (req, res, next) => {
+  if (req.body._method == 'DELETE') {
+    req.method = req.body._method;
+  }
+  next();
+});
 
 /*
  * Allow overriding the JWT secret in the environment, a la Kubernetes
@@ -75,6 +88,7 @@ app.set('view engine', 'pug');
 
 Dashboard(app);
 Export(app);
+Admin(app);
 
 app.get('/logout',
   cookieParser(),
