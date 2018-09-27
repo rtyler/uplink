@@ -22,8 +22,9 @@ exec docker run --rm ${TTY_ARGS} --net host  \
     --mount type=tmpfs,destination=/.npm \
     --mount type=tmpfs,destination=/.config \
     -v ${PWD}:${PWD} \
-    -e PATH=$PWD/node_modules/.bin:/usr/local/bin:$PATH \
+    -e PATH="$PWD/node_modules/.bin:/usr/local/bin:$PATH" \
     -e LANG=C.UTF-8 \
+    -e DB_CONNECTION_STRING="${DB_CONNECTION_STRING}" \
     -e LOG_LEVEL=$LOG_LEVEL \
     $(printenv | grep -i \^node | awk '{ print "-e", $1 }') \
     node:10 \

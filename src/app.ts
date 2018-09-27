@@ -1,11 +1,24 @@
 
+import logger from './logger';
 import path from 'path';
+
+/*
+ * Express-relateed imports that we need because this is running primarily over
+ * REST
+ */
+import cookieParser from 'cookie-parser';
 import favicon from 'serve-favicon';
 import compress from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
-import logger from './logger';
 
+import * as Sentry from '@sentry/node';
+/**/
+
+
+/*
+ * Feathers specific imports for setting up the application
+ */
 import feathers from '@feathersjs/feathers';
 import configuration from '@feathersjs/configuration';
 import authentication from '@feathersjs/authentication';
@@ -14,8 +27,8 @@ import oauth2 from '@feathersjs/authentication-oauth2';
 import { Strategy } from 'passport-github';
 import express from '@feathersjs/express';
 import socketio from '@feathersjs/socketio';
+/**/
 
-import cookieParser from 'cookie-parser';
 
 import middleware from './middleware';
 import services from './services';
@@ -29,6 +42,25 @@ import Export from './controllers/export';
 const app = express(feathers());
 const settings = configuration();
 
+if (process.env.SENTRY_DSN) {
+  Sentry.init({ dsn: process.env.SENTRY_DSN })
+  /*
+   * Cannot case to RequestHandler per Sentry's docs due to compilation error:
+   *
+   * src/app.ts:48:11 - error TS2352: Type '(req: ClientRequest, res:
+   * ServerResponse, next: () => void) => void' cannot be converted to type
+   * 'RequestHandler'.
+   *   Types of parameters 'req' and 'req' are incompatible.
+   *       Type 'Request' is not comparable to type 'ClientRequest'.
+   *             Property 'aborted' is missing in type 'Request'.
+   *
+   *             48   app.use(Sentry.Handlers.requestHandler() as
+   *             RequestHandler);
+   */
+  app.use(Sentry.Handlers.requestHandler() as any);
+  logger.info('Sentry configured and installed');
+}
+
 // Load app configuration
 app.configure(settings);
 // Enable security, CORS, compression, favicon and body parsing
@@ -40,7 +72,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', express.static(app.get('public')));
-
 
 // Set up Plugins and providers
 app.configure(express.rest());
@@ -105,6 +136,8 @@ app.configure(services);
 // Set up event channels (see channels.js)
 app.configure(channels);
 
+// The error handler must be before any other error middleware
+app.use(Sentry.Handlers.errorHandler() as any);
 // Configure a middleware for 404s and the error handler
 app.use(express.notFound());
 app.use(express.errorHandler({ logger }));
