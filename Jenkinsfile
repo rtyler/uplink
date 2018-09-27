@@ -1,31 +1,41 @@
 pipeline {
-  agent { label 'linux' }
-  stages { 
-    stage('Build & test') {
-      steps {
-        sh 'make migrate'
-        sh 'make check'
-      }
+    agent { label 'linux' }
+
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        builddiscarder(logrotator(daystokeepstr: '10'))
+        timestamps()
     }
 
-    stage('Containers') {
-      steps {
-        sh 'make container'
-      }
+    triggers {
+        pollscm('H * * * *')
     }
 
-    stage('Publish container') {
-        when {
-            expression { infra.isTrusted() }
+    stages { 
+        stage('Build & test') {
+            steps {
+                sh 'make migrate check'
+            }
         }
 
-        steps {
-            withCredentials([[$class: 'ZipFileBinding',
-                        credentialsId: 'jenkins-dockerhub',
-                            variable: 'DOCKER_CONFIG']]) {
-                sh 'make publish'
+        stage('Containers') {
+            steps {
+                sh 'make container'
+            }
+        }
+
+        stage('Publish container') {
+            when { expression { infra.isTrusted() } }
+
+            steps {
+                withCredentials([[$class: 'ZipFileBinding',
+                            credentialsId: 'jenkins-dockerhub',
+                                variable: 'DOCKER_CONFIG']]) {
+                    sh 'make publish'
+                }
             }
         }
     }
-  }
 }
+
+// vim: ft=groovy
