@@ -3,7 +3,7 @@ pipeline {
 
     options {
         timeout(time: 1, unit: 'HOURS')
-        buildDiscarder(logRotator(daystokeepstr: '10'))
+        buildDiscarder(logRotator(daysToKeepStr: '10'))
         timestamps()
     }
 
