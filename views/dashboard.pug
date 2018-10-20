@@ -3,13 +3,6 @@ html(lang="en")
   link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous")
   head
     title Uplink Dashboard
-    script(type='text/javascript').
-      function navigateToType() {
-        const el = document.getElementById('type-nav');
-        const type = el.options[el.selectedIndex].value;
-        window.location = `/dashboard?type=${type}`;
-        return false;
-      }
   body.bg-dark
     .container
       div.float-right
@@ -74,6 +67,31 @@ html(lang="en")
                   li.list-item
                     a(href='/export/' + e.type, title='Export a .json file of all `' + e.type + '` records').
                       Export all of this type
+
+    script(type='text/javascript').
+      function navigateToType() {
+        const el = document.getElementById('type-nav');
+        const type = el.options[el.selectedIndex].value;
+        window.location = `/dashboard?type=${type}`;
+        return false;
+      }
+
+      function selectCurrentType() {
+        const el = document.getElementById('type-nav');
+        const urlparams = new URLSearchParams(window.location.search);
+        const type = urlparams.get('type');
+        let index = 0;
+        if (type) {
+          for (e of el.options) {
+            if (e.value == type) {
+              el.selectedIndex = index;
+              return;
+            }
+            index = index + 1;
+          }
+        }
+      }
+      selectCurrentType();
 
 // vim: ft=haml
 
