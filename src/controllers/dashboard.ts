@@ -19,6 +19,7 @@ export default (app) => {
       const user = (req as any).user;
       const name : string = user.github.profile.username;
       const grants : Array<string> = await app.service('grants').find({ query: { name: name }});
+      const types : Array<string> = await app.service('types').find();
       const isAdmin : boolean = (grants.filter(g => g != '*').length > 0);
 
       app.service('events')
@@ -34,6 +35,7 @@ export default (app) => {
             query: req.query,
             isAdmin: isAdmin,
             grants: grants,
+            types: types,
           }))
         .catch(next);
   });

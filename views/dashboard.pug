@@ -3,6 +3,13 @@ html(lang="en")
   link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous")
   head
     title Uplink Dashboard
+    script(type='text/javascript').
+      function navigateToType() {
+        const el = document.getElementById('type-nav');
+        const type = el.options[el.selectedIndex].value;
+        window.location = `/dashboard?type=${type}`;
+        return false;
+      }
   body.bg-dark
     .container
       div.float-right
@@ -42,6 +49,10 @@ html(lang="en")
                 a(href='?$sort[correlator]=-1').text-light ▲
                 a(href='?$sort[correlator]=1').text-light ▼
             th(scope='col').text-center Type
+              if types.length > 0
+                select(id='type-nav', name='types', onchange='navigateToType()')
+                  each t in types
+                    option(value=t) #{t}
             th(scope='col').text-center Payload
             th(scope='col').text-center Actions
           each e in events.data
