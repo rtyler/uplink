@@ -13,7 +13,7 @@ const getUrl = pathname => url.format({
   pathname
 });
 
-describe('Acceptance tests for /evetns', () => {
+describe('Acceptance tests for /events', () => {
   beforeEach((done) => {
     this.server = app.listen(port);
     this.server.once('listening', () => done());
