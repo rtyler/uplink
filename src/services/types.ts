@@ -16,7 +16,6 @@ const typesHooks : HooksObject = {
 export class TypesService {
   async find(params : Params) : Promise<any> {
     return db.sequelize.query('SELECT DISTINCT(type) FROM events', { type: db.sequelize.QueryTypes.SELECT }).then((types) => {
-      console.log('lol', types);
       if (types.length > 0) {
         return types.map(t => t.type);
       }
