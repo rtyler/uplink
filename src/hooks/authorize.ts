@@ -4,8 +4,21 @@ import { SKIP } from '@feathersjs/feathers';
 
 import logger from '../logger';
 
-export default () => {
+export interface AuthorizeOptions {
+  allowInternal?: boolean,
+};
+
+export default (options : AuthorizeOptions = {}) => {
   return async context => {
+
+    /*
+     * Allow internal API calls to skip the entire authorization process
+     */
+    if ((options.allowInternal) &&
+        (!context.params.provider)) {
+      return SKIP;
+    }
+
     if ((process.env.NODE_ENV == 'test') &&
         (context.params.query.testing_access_token)) {
       // Remove the property to make sure it's not used in the DB query
