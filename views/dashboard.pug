@@ -45,7 +45,7 @@ html(lang="en")
               if types.length > 0
                 select(id='type-nav', name='types', onchange='navigateToType()')
                   each t in types
-                    option(value=t) #{t}
+                    option(value=t.type) #{t.type}
             th(scope='col').text-center Payload
             th(scope='col').text-center Actions
           each e in events.data
