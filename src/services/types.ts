@@ -3,28 +3,26 @@
  */
 
 import { Params, HooksObject } from '@feathersjs/feathers';
+import service from 'feathers-sequelize';
 
+import authorize from '../hooks/authorize';
+import applyGrant from '../hooks/apply-grant';
 import db from '../models';
-import Event from '../models/event';
+import Type from '../models/type';
 
 const typesHooks : HooksObject = {
-  before: {},
+  before: {
+    all: [
+      authorize(),
+      applyGrant(),
+    ],
+  },
   after: {},
   error: {},
 };
 
-export class TypesService {
-  async find(params : Params) : Promise<any> {
-    return db.sequelize.query('SELECT DISTINCT(type) FROM events', { type: db.sequelize.QueryTypes.SELECT }).then((types) => {
-      if (types.length > 0) {
-        return types.map(t => t.type);
-      }
-      return [];
-    });
-  }
-}
-
 export default (app) => {
-  app.use('/types', new TypesService);
+  const Model : any = Type(db.sequelize, db.sequelize.Sequelize);
+  app.use('/types', service({ Model: Model }));
   app.service('types').hooks(typesHooks);
 }
