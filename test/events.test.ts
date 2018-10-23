@@ -31,20 +31,31 @@ describe('Acceptance tests for /events', () => {
     );
   });
 
-  it('POST /events should allow creating a valid event', () => {
-    return request(getUrl('/events'), {
-      method: 'POST',
-      json: true,
-      resolveWithFullResponse: true,
-      body: {
-        type: 'jest-example',
-        payload: {
-          generatedAt: Date.now(),
+  describe('POST to /events', () => {
+    it('should create a valid event', () => {
+      return request.post(getUrl('/events'), {
+        json: true,
+        resolveWithFullResponse: true,
+        body: {
+          type: 'jest-example',
+          payload: {
+            generatedAt: Date.now(),
+          },
+          correlator: '0xdeadbeef',
         },
-        correlator: '0xdeadbeef',
-      },
-    }).then(response =>
-      expect(response.statusCode).toEqual(201)
-    );
+      }).then((response) => {
+        expect(response.statusCode).toEqual(201)
+
+        // ensure that a type has been created in the types table
+        return request.get(getUrl('/types'), {
+          json: true,
+          resolveWithFullResponse: true,
+          qs: { testing_access_token: true },
+        }).then((response) => {
+          expect(response.statusCode).toEqual(200);
+          expect(response.body.length).toEqual(1);
+        });
+      });
+    });
   });
 });

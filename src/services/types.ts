@@ -13,7 +13,7 @@ import Type from '../models/type';
 const typesHooks : HooksObject = {
   before: {
     all: [
-      authorize(),
+      authorize({ allowInternal: true, }),
       applyGrant(),
     ],
   },
@@ -23,6 +23,12 @@ const typesHooks : HooksObject = {
 
 export default (app) => {
   const Model : any = Type(db.sequelize, db.sequelize.Sequelize);
-  app.use('/types', service({ Model: Model }));
+  const typesService = service({ Model: Model });
+
+  delete typesService.update;
+  delete typesService.remove;
+  delete typesService.patch;
+
+  app.use('/types', typesService);
   app.service('types').hooks(typesHooks);
 }

@@ -40,7 +40,23 @@ export const eventsHooks : HooksObject = {
       authorize(),
     ],
   },
-  after: {},
+  after: {
+    create: [
+      (context) => {
+        return context.app.service('types')
+          .create({
+            type: context.data.type,
+          })
+        .then(() => { return context; })
+        .catch((err) => {
+          // hitting the UNIQUE constraint is an acceptable error
+          if (!err.errors.filter(e => e.type == 'unique violation')) {
+            throw err;
+          }
+        });
+      },
+    ],
+  },
   error: {},
 };
 
