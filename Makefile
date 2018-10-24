@@ -65,7 +65,7 @@ watch: migrate
 	$(COMPOSE) run --rm \
 		-e NODE_ENV=test \
 		node \
-		/usr/local/bin/node $(JEST) $(JEST_ARGS) --watch
+		/usr/local/bin/node $(JEST) $(JEST_ARGS) --watch --coverage=false
 
 watch-compile:
 	$(TSC) -w
