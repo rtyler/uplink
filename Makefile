@@ -30,7 +30,9 @@ build: depends
 check: build depends migrate
 	# Running with docker-compose since our tests require a database to be
 	# present
-	$(COMPOSE) run --rm node \
+	$(COMPOSE) run --rm \
+		-e NODE_ENV=test \
+		node \
 		/usr/local/bin/node $(JEST) $(JEST_ARGS)
 
 clean:
@@ -60,8 +62,10 @@ migrate: depends
 watch: migrate
 	# Running with docker-compose since our tests require a database to be
 	# present
-	$(COMPOSE) run --rm node \
-		/usr/local/bin/node $(JEST) $(JEST_ARGS) --watch
+	$(COMPOSE) run --rm \
+		-e NODE_ENV=test \
+		node \
+		/usr/local/bin/node $(JEST) $(JEST_ARGS) --watch --coverage=false
 
 watch-compile:
 	$(TSC) -w
