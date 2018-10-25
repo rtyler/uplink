@@ -32,6 +32,15 @@ describe('Acceptance tests for /events', () => {
   });
 
   describe('POST to /events', () => {
+    beforeEach(() => {
+      const removalArgs = { query: { $limit: 1000 } };
+      return app.service('events')
+        .remove(null, removalArgs)
+          .then(() => {
+            return app.service('types').remove(null, removalArgs);
+          });
+    });
+
     it('should create a valid event', () => {
       return request.post(getUrl('/events'), {
         json: true,

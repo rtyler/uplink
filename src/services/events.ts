@@ -37,7 +37,8 @@ export const eventsHooks : HooksObject = {
       authorize(),
     ],
     remove: [
-      authorize(),
+      // Used internally for tests
+      authorize({ allowInternal: true, }),
     ],
   },
   after: {
