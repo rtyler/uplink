@@ -13,7 +13,7 @@ export default (app) => {
     async (req, res, next) => {
       const query = Object.assign({
         $sort: {
-          createdAt: -1,
+          id: -1,
         }
       }, req.query);
       const user = (req as any).user;

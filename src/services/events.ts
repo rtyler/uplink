@@ -20,6 +20,20 @@ export const eventsHooks : HooksObject = {
     find: [
       authorize(),
       applyGrant(),
+      /*
+       * Pagination for feathers-sequelize relies on Model.findAndCountAll()
+       * which implements superslow SELECT COUNT(DISTINCT(id)) FROM events
+       * queries against the super-big database tables in production.
+       *
+       * Rather than rely on pagination, we'll simply add our limit and let the
+       * front-end go forwards and backwards, but never discover the total
+       * number of pages
+       */
+      (context) => {
+        Object.assign(context.params.query, {
+          $limit: 25,
+        });
+      },
     ],
     get: [
       authorize(),
@@ -65,8 +79,6 @@ export default (app : Application) => {
   const Model : any = Event(db.sequelize, db.sequelize.Sequelize);
   app.use('/events', service({
     Model: Model,
-    paginate: {
-      default: 25,
-  }}));
+  }));
   app.service('events').hooks(eventsHooks);
 };
