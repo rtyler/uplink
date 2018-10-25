@@ -27,10 +27,9 @@ html(lang="en")
             li.list-inline-item
               a(href='/dashboard', title='Reset the filter query').
                 Reset query
-            if events.total > events.limit
-              li.list-inline-item
-                a(href='?id[$lt]=' + events.data[events.data.length - 1].id, title='View the next page of results').
-                  Next
+            li.list-inline-item
+              a(href='?id[$lt]=' + events[events.length - 1].id, title='View the next page of results').
+                Next
         table.table-dark.table.table-striped.table-borderd.table-hover
           tr
             th(scope='col').text-center ID &nbsp;
@@ -48,7 +47,7 @@ html(lang="en")
                     option(value=t.type) #{t.type}
             th(scope='col').text-center Payload
             th(scope='col').text-center Actions
-          each e in events.data
+          each e in events
             tr
               td.text-center.
                 #{e.id}
