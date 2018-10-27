@@ -24,4 +24,4 @@ COPY .sequelizerc ${APP_DIR}/
 
 EXPOSE 3030
 
-CMD node ./node_modules/.bin/sequelize db:migrate && node ./build/
+CMD node ./node_modules/.bin/sequelize db:migrate || node ./build/
