@@ -22,19 +22,6 @@ export default (app) => {
       const types : Array<Object> = await app.service('types').find();
       const isAdmin : boolean = (grants.filter(g => g != '*').length > 0);
 
-      const months = [];
-      const today = new Date();
-      /*
-       * TODO: In the future this come from the first_Type table
-       */
-      const firstDate = new Date('2018-09-01');
-      const nextDate = firstDate;
-
-      do {
-        nextDate.setUTCMonth(nextDate.getUTCMonth() + 1);
-        months.push(`${nextDate.getUTCFullYear()}-${nextDate.getUTCMonth()}-01`);
-      } while (nextDate < today);
-
       app.service('events')
         .find({
           query: query,
@@ -49,7 +36,6 @@ export default (app) => {
             isAdmin: isAdmin,
             grants: grants,
             types: types,
-            months: months,
           }))
         .catch(next);
   });

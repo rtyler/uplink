@@ -23,22 +23,24 @@ html(lang="en")
       .container-fluid.text-light
         if types.length > 0
           h3 Export
-          table.table-dark.table.table-striped.table-borderd.table-hover
-            tr
-              th(scope='col').text-center Type
-              th(scope='col').text-center Month
-              th(scope='col')
-            tr
-              td.text-center
-                select(id='export-type', name='type')
-                  each t in types
-                    option(value=t.type) #{t.type}
-              td.text-center
-                select(id='export-date', name='startDate')
-                  each month in months.reverse()
-                    option(value='#{month}') #{month}
-              td.text-center
-                input(type='submit', onclick='return exportType()', value='Export')
+          form(action='/export', method='POST')
+            table.table-dark.table.table-striped.table-borderd.table-hover
+              tr
+                th(scope='col').text-center Type
+                th(scope='col').text-center Range Start
+                th(scope='col').text-center Range End
+                th(scope='col')
+              tr
+                td.text-center
+                  select(id='export-type', name='type')
+                    each t in types
+                      option(value=t.type) #{t.type}
+                td.text-center
+                  input(name='startDate', placeholder='2018-10-01')
+                td.text-center
+                  input(name='endDate', placeholder='2018-10-15')
+                td.text-center
+                  input(type='submit', value='Export')
 
       .container-fluid.text-light
         div.float-right.strong
