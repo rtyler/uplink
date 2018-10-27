@@ -40,6 +40,7 @@ export class Bulk {
     if (!params.query.type) {
       return Promise.reject(new BadRequest('Request must have a `type` in the URL'));
     }
+
     const grantedTypes = params.grants.filter(g => (g == '*') || (g == params.query.type));
     if (grantedTypes.length == 0) {
       return Promise.reject(new NotFound('No data found'));
@@ -49,9 +50,11 @@ export class Bulk {
      * This is clearly stupid. I have no idea how we'll query very large
      * datasets from PostgreSQL but this at least gets us _everything_
      */
-    return db.sequelize.query("SELECT * FROM events WHERE type = :type", {
+    return db.sequelize.query("SELECT * FROM events WHERE type = :type AND \"createdAt\" > :startDate AND \"createdAt\" < :endDate", {
       replacements: {
         type: params.query.type,
+        startDate: params.query.startDate,
+        endDate: params.query.endDate,
       },
       type: QueryTypes.SELECT,
     });

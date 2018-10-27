@@ -11,15 +11,21 @@ export default (app) => {
     cookieParser(),
     authentication.express.authenticate('jwt'),
     (req, res, next) => {
+      const startDate = req.query.startDate;
+      const endDate = new Date(startDate)
+      endDate.setUTCMonth(endDate.getUTCMonth() + 1)
+
       app.service('/events/bulk')
         .find({
           query: {
             type: req.params.type,
+            startDate: startDate,
+            endDate: endDate,
           },
           user: (req as any).user,
         })
         .then((result) => {
-          res.setHeader('Content-Disposition', `attachment; filename=${req.params.type}.json`);
+          res.setHeader('Content-Disposition', `attachment; filename=${req.params.type}-${req.query.startDate}.json`);
           res.setHeader('Content-Type', 'application/json');
           res.send(result);
           res.end();
