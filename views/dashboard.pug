@@ -21,6 +21,28 @@ html(lang="en")
           strong #{user.github.profile.displayName}
 
       .container-fluid.text-light
+        if types.length > 0
+          h3 Export
+          form(action='/export', method='POST')
+            table.table-dark.table.table-striped.table-borderd.table-hover
+              tr
+                th(scope='col').text-center Type
+                th(scope='col').text-center Range Start
+                th(scope='col').text-center Range End
+                th(scope='col')
+              tr
+                td.text-center
+                  select(id='export-type', name='type')
+                    each t in types
+                      option(value=t.type) #{t.type}
+                td.text-center
+                  input(name='startDate', placeholder='2018-10-01')
+                td.text-center
+                  input(name='endDate', placeholder='2018-10-15')
+                td.text-center
+                  input(type='submit', value='Export')
+
+      .container-fluid.text-light
         div.float-right.strong
           div
           ul.list-inline
@@ -30,6 +52,7 @@ html(lang="en")
             li.list-inline-item
               a(href='?id[$lt]=' + events[events.length - 1].id, title='View the next page of results').
                 Next
+        h3 Browse
         table.table-dark.table.table-striped.table-borderd.table-hover
           tr
             th(scope='col').text-center ID &nbsp;
@@ -59,19 +82,23 @@ html(lang="en")
                 textarea(cols=80, rows=4, readonly=true).
                   #{JSON.stringify(e.payload)}
               td
-                ul.list
-                  li.list-item
-                    a(href='/events/' + e.id, target='_blank', title='View the raw JSON of this event').
-                      View Raw
-                  li.list-item
-                    a(href='/export/' + e.type, title='Export a .json file of all `' + e.type + '` records').
-                      Export all of this type
+                a(href='/events/' + e.id, target='_blank', title='View the raw JSON of this event').
+                  View Raw
 
     script(type='text/javascript').
       function navigateToType() {
         const el = document.getElementById('type-nav');
         const type = el.options[el.selectedIndex].value;
         window.location = `/dashboard?type=${type}`;
+        return false;
+      }
+
+      function exportType() {
+        const el = document.getElementById('export-type');
+        const type = el.options[el.selectedIndex].value;
+        const dateElem = document.getElementById('export-date');
+        const startDate = dateElem.options[dateElem.selectedIndex].value;
+        window.location.href = `/export/${type}?startDate=${startDate}`;
         return false;
       }
 
