@@ -65,7 +65,10 @@ export const eventsHooks : HooksObject = {
         .then(() => { return context; })
         .catch((err) => {
           // hitting the UNIQUE constraint is an acceptable error
-          if (!err.errors.filter(e => e.type == 'unique violation')) {
+          if ((err.errors) && (!err.errors.filter(e => e.type == 'unique violation'))) {
+            throw err;
+          }
+          else {
             throw err;
           }
         });
