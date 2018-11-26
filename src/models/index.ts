@@ -35,15 +35,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-
-/*
- * Periodically refresh the materialized view for holding the first types
- */
-setInterval(() => {
-  logger.info('Refreshing the `first_type` materialized view');
-  sequelize.query('REFRESH MATERIALIZED VIEW first_type');
-}, ((60 * 1000) * 60));
-
-
-
 export default db;
