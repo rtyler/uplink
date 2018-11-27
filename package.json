@@ -51,6 +51,7 @@
     "compression": "^1.7.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
+    "event-stream": "^3.3.4",
     "feathers-memory": "^2.2.0",
     "feathers-sequelize": "^3.1.2",
     "helmet": "^3.13.0",
