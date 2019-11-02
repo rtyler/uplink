@@ -58,7 +58,7 @@
     "passport-github": "^1.1.0",
     "pg": "^7.4.3",
     "pug": "^2.0.3",
-    "sequelize": "^4.38.0",
+    "sequelize": "^5.15.1",
     "serve-favicon": "^2.5.0",
     "tslib": "^1.9.3",
     "uuid": "^3.3.2",
